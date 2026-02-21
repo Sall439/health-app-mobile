@@ -7,6 +7,7 @@ const MessagesRoutes = require("./routes/MessagesRoutes")
 const RecordRoutes = require("./routes/RecordsRoutes")
 
 const app = express()
+const router = express.Router()
 
 app.use(express.json())
 app.use(cors())
@@ -18,8 +19,8 @@ app.use("/api/appointments", AppointmentRoutes)
 app.use("/api/messages", MessagesRoutes)
 app.use("/api/records", RecordRoutes)
 
-app.get("/", (req, res) => {
-    res.send("PAges deploye")
+router.get("/", (req, res) => {
+   res.status(200).json({ status: "ok" })
 })
 
 app.listen(process.env.PORT,() => {
