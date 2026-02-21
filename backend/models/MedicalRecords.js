@@ -30,8 +30,6 @@ const recordsSchema = mongoose.Schema({
 
     date: {
         type: Date,
-        default: date.now()
-
     }
 }, {timestamps: true})
 

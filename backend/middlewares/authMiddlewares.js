@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 
 
-const protect = async (req, res) => {
+const protect = async (req, res, next) => {
     try {
        // 1️⃣ Vérifier token dans le cookie
         let token = req.cookies?.token
@@ -12,7 +12,7 @@ const protect = async (req, res) => {
         }
         
         if(!token){
-            return res.status(401).json({messages : "Non autorise, token manquant"})
+            return res.status(401).json({message : "Non autorise, token manquant"})
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET)

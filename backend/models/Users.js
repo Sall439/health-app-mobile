@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
     },
     specialite: {
         type: String,
-        required: () => {
+        required: function () {
             return this.role === "doctor"
         }
     },

@@ -1,7 +1,10 @@
-const authorizeRole = (...role) => {
+const authorizeRole = (...roles) => {
     return (req, res, next) => {
-        if(!removeEventListener.includes(req.user.role)){
-            return res.status(403).json({message: "Acces refuse"})
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Accès refusé" })
         }
+        next()
     }
 }
+
+module.exports = authorizeRole

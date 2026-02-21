@@ -18,7 +18,7 @@ const appointSchema = mongoose.Schema({
         required: true
     },
     heure: {
-        type: Date,
+        type: String,
         required: true
     },
 
