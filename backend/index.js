@@ -19,7 +19,7 @@ app.use("/api/appointments", AppointmentRoutes)
 app.use("/api/messages", MessagesRoutes)
 app.use("/api/records", RecordRoutes)
 
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
    res.status(200).json({ status: "ok" })
 })
 
