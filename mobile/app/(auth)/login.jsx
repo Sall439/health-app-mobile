@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity, Alert, Modal } from "react-native";
 import { useAuthStore } from "../../src/store/auth.store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -17,6 +17,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+    const [modalVisible, setModalVisible] = useState(false);
 
   const handleLogin = async () => {
     if(!email || !password){
@@ -41,7 +42,12 @@ export default function Login() {
         })
 
         console.log("USER AFTER SET:", data.user)
-        router.replace("../home")
+        setModalVisible(true)
+
+        setTimeout(() => {
+            setModalVisible(false)
+            router.replace("../home")
+        }, 1500)
 
     } catch (error) {
         setError(error.message)
@@ -98,8 +104,7 @@ export default function Login() {
        <Modal visible={modalVisible} transparent animationType="fade">
         <View style={{ flex:1, justifyContent:"center", alignItems:"center", backgroundColor:"rgba(0,0,0,0.4)" }}>
           <View style={{ backgroundColor:"white", padding:30, borderRadius:15, alignItems:"center" }}>
-            <Text style={{ fontSize:18, fontWeight:"bold", marginBottom:10 }}>Inscription réussie !</Text>
-            <Text>Bienvenue {name}</Text>
+            <Text style={{ fontSize:18, fontWeight:"bold", marginBottom:10 }}>Connexion réussie !</Text>
           </View>
         </View>
       </Modal>

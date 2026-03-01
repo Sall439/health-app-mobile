@@ -23,7 +23,7 @@ export default function register() {
   const [role, setRole] = useState("patient")
   const [specialty, setSpecialty] = useState("")
   const [tel, setTel] = useState("")
-  const [modalVisible, setModalVisible] = useState(false);
+ 
 
   const handleSubmit = async () => {
     if(!name || !email || !password || !role){
@@ -51,12 +51,7 @@ export default function register() {
          }
 
 
-        setModalVisible(true)
-
-        setTimeout(() => {
-            setModalVisible(false)
-            router.replace("../home")
-        }, 1500)
+       
 
     } catch (err) {
         console.log("REGISTER ERROR:", err);
