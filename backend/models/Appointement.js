@@ -13,6 +13,18 @@ const appointSchema = mongoose.Schema({
         required: true
     },
 
+    specialiteId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hospital",
+        required: true
+    },
+
+     hospitalId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hospital",
+        required: true
+    },
+    
     date: {
         type: Date,
         required: true

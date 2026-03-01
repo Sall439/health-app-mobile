@@ -17,7 +17,10 @@ router.post("/change-password", protect, changePassword)
 
 // Patient Routes
 router.get("/patient/profile",protect,authorizeRole("patient"), getProfile)
-router.get("/patient/doctors",protect, authorizeRole("patient"), getAlldoctors)
+router.get("/patient/doctors", protect, authorizeRole("patient"), (req, res) => {
+    const { hospitalId, specialtyId } = req.query;
+    getAlldoctors(req, res, { hospitalId, specialtyId });
+});
 router.get("/patient/appointments",protect, authorizeRole("patient"), getAllAppointment)
 router.post("/patient/newAppointment",protect, authorizeRole("patient"), createAppointment)
 router.put("/patient/appointments/:id",protect, authorizeRole("patient"), reportAppointment)

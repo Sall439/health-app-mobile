@@ -31,7 +31,14 @@ const loginUsers = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
 
-        return res.status(200).json({message: "Utilisateur connecte", token})
+        return res.status(200).json({message: "Utilisateur connecte", token,
+            user: {
+            id: existingUser._id,
+            name: existingUser.name,
+            role: existingUser.role,
+            specialty: existingUser.specialty || null,
+        }
+        })
 
    } catch (error) {
         return res.status(500).json({message: error.message})
@@ -70,10 +77,13 @@ const registerUsers = async (req, res) => {
 
 
         // On dis que si le role === doctor donc on rempli le champ spacialite sinon ya pas lieu d'etre
-        if (role === "doctor") {
-            userData.specialite = specialite
+       if(role === "doctor") {
+        if(!specialtyId || !hospitalId) {
+            return res.status(400).json({ message: "Specialty et Hospital sont obligatoires pour un docteur" });
         }
-
+        userData.specialite = specialtyId;
+        userData.hospital = hospitalId;
+    }
         const newUser = await Users.create(userData)            
 
         const token = jwt.sign({

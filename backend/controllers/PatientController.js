@@ -14,8 +14,13 @@ const getAlldoctors = async (req, res) => {
 
 const createAppointment = async (req, res) => {
     try {
-        const {doctorId, motif, heure, date} = req.body
+       const { doctorId, hospitalId, specialtyId, motif, date, heure } = req.body;
 
+        const doctor = await Users.findById(doctorId);
+        if(!doctor || doctor.role !== "doctor") return res.status(400).json({msg:"Médecin invalide"});
+        if(doctor.hospital.toString() !== hospitalId) return res.status(400).json({msg:"Médecin non disponible dans cet hôpital"});
+        if(doctor.specialty.toString() !== specialtyId) return res.status(400).json({msg:"Médecin non disponible pour cette spécialité"});
+        
         const newAppointment = await Appointement.create({
             patientId: req.user.id,
             doctorId,

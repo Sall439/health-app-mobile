@@ -3,15 +3,17 @@ const MedicalRecords = require("../models/MedicalRecords")
 // Ajouter un dossier médical (doctor uniquement)
 const addRecord = async (req, res) => {
     try {
-        const { patientId, diagnostic, prescription, notes } = req.body
+       const { patientId, diagnostic, prescription, notes, hospitalId, specialtyId } = req.body;
 
         const newRecord = await MedicalRecords.create({
             patientId,
             doctorId: req.user.id,
+            hospitalId,
+            specialtyId,
             diagnostic,
             prescription,
             notes
-        })
+        });
 
         res.status(201).json(newRecord)
 

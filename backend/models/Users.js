@@ -25,11 +25,17 @@ const userSchema = mongoose.Schema({
         default: "patient"
     },
     specialite: {
-        type: String,
-        required: function () {
-            return this.role === "doctor"
-        }
+        type: mongoose.Schema.Types.ObjectId,
+       ref: "Specialty",
+       required: function(){this.role ==="doctor"}
     },
+
+     hospital: {
+        type: mongoose.Schema.Types.ObjectId,
+       ref: "Hospital",
+       required: function(){this.role ==="doctor"}
+    },
+
     tel: {
         type: String,
         required: true
