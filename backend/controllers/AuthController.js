@@ -35,6 +35,8 @@ const loginUsers = async (req, res) => {
             user: {
             id: existingUser._id,
             name: existingUser.name,
+            email: existingUser.email,
+            tel: existingUser.tel,
             role: existingUser.role,
             specialty: existingUser.specialty || null,
         }

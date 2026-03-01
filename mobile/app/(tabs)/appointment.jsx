@@ -21,48 +21,45 @@ const appointments = () => {
   const [appointmentList, setAppointmentList] = useState([])
   const [successModal, setSuccessModal] = useState(false)
   const [formData, setFormData] = useState({
-    doctorId: "",
-    hospitalId: "",
-    specialityId: "",
+    doctor: "",
+    hospital: "",
+    specialite: "",
     motif: "",
     date: "",
     heure: ""
   })
   
-   const loadAppointments = async () => {
-    try {
-      const data = await getAppointments();
-      setAppointmentList(data);
-    } catch (error) {
-      Alert.alert("Erreur", "Impossible de charger les rendez-vous");
-    }
-  };
-
   useEffect(() => {
-    loadAppointments();
-  }, []);
+  const loadAppointments = async () => {
+    const stored = await AsyncStorage.getItem('appointments');
+    if (stored) setAppointmentList(JSON.parse(stored));
+  };
+  loadAppointments();
+}, []);
 
 // Sauvegarder les rendez-vous à chaque ajout
-  const handleAddAppointment = async () => {
-    const { doctorId, hospitalId, specialtyId, motif, date, heure } = formData;
-    if (!doctorId || !hospitalId || !specialtyId || !motif || !date || !heure) {
-      return Alert.alert("Veuillez remplir tous les champs");
-    }
+const handleAddAppointment = async () => {
+  if(!formData.date || !formData.doctor || !formData.hospital || !formData.heure || !formData.specialite || !formData.motif){
+    return Alert.alert("Veuillez remplir touts les champs")
+  }
 
-    try {
-      const res = await createAppointment(formData);
-      console.log("Appointment created:", res);
-      // Mettre à jour la liste localement
-      setAppointmentList(prev => [...prev, res.newAppointment]);
-      setModal(false);
-      setSuccessModal(true);
-      setFormData({ doctorId: "", hospitalId: "", specialtyId: "", motif: "", date: "", heure: "" });
-      setTimeout(() => setSuccessModal(false), 2000);
-    } catch (error) {
-      Alert.alert("Erreur", error.message || "Impossible d'ajouter le rendez-vous");
-    }
-  };
+  const newList = [...appointmentList, {...formData, id: Date.now().toString()}];
+  setAppointmentList(newList);
 
+  await AsyncStorage.setItem('appointments', JSON.stringify(newList));
+
+  setFormData({
+    doctor: "",
+    hospital: "",
+    specialite: "",
+    motif: "",
+    date: "",
+    heure: ""
+  });
+  setModal(false);
+  setSuccessModal(true);
+  setTimeout(() => setSuccessModal(false), 2000);
+};
   return (
    <SafeAreaView style={{flex: 1, paddingBottom: 80}}>
         <HeaderPages text={"Appointment"}/>

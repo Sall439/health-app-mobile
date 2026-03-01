@@ -37,6 +37,8 @@ export default function Login() {
         setUser({
             id: data.user.id,
             name: data.user.name,
+            email: data.user.email,
+            tel: data.user.tel,
             role: data.user.role.toUpperCase() == "PATIENT" ? "PATIENT": "DOCTOR",
             specialty: data.user.specialty || undefined
         })
