@@ -34,12 +34,13 @@ export default function Login() {
         await SecureStore.setItemAsync("token", data.token)
 
         setUser({
-            id: data.id,
-            name: data.name,
-            role: data.role
+            id: data.user.id,
+            name: data.user.name,
+            role: data.user.role.toUpperCase() == "PATIENT" ? "PATIENT": "DOCTOR",
+            specialty: data.user.specialty || undefined
         })
 
-
+        console.log("USER AFTER SET:", data.user)
         router.replace("../home")
 
     } catch (error) {
@@ -93,6 +94,15 @@ export default function Login() {
                 <Text>Continue with Apple</Text>
             </TouchableOpacity>
        </View>
+
+       <Modal visible={modalVisible} transparent animationType="fade">
+        <View style={{ flex:1, justifyContent:"center", alignItems:"center", backgroundColor:"rgba(0,0,0,0.4)" }}>
+          <View style={{ backgroundColor:"white", padding:30, borderRadius:15, alignItems:"center" }}>
+            <Text style={{ fontSize:18, fontWeight:"bold", marginBottom:10 }}>Inscription réussie !</Text>
+            <Text>Bienvenue {name}</Text>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

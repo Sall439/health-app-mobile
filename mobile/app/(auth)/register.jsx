@@ -1,20 +1,72 @@
-import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useAuthStore } from "../../src/store/auth.store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS, FONTS } from "../../src/constants/theme";
 import { Link, router } from "expo-router";
 import { useState } from "react";
+import { registerUser } from "../../src/services/auth.service";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as SecureStore from "expo-secure-store";
+import Feather from '@expo/vector-icons/Feather';
+
 
 export default function register() {
   const setUser = useAuthStore((state) => state.setUser);
+
    const [email, setEmail] = useState('')
    const [name, setName] = useState("")
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [role, setRole] = useState<"PATIENT" | "DOCTOR">("PATIENT")
+  const [role, setRole] = useState("patient")
   const [specialty, setSpecialty] = useState("")
+  const [tel, setTel] = useState("")
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSubmit = async () => {
+    if(!name || !email || !password || !role){
+        Alert.alert("Veuillez remplir ses champs")
+    }
+
+    let data
+
+    try {
+        setLoading(true)
+        setError(null)
+
+
+         data = await registerUser({email, role, password, name, specialty, tel})
+         console.log("REGISTER RESPONSE",data);
+
+         if(data?.newUser){
+             setUser({
+                id: data.newUser.id,
+                name: data.newUser.name,
+                email: data.newUser.email,
+                tel: data.newUser.tel,
+                role: data.newUser.role
+             })
+         }
+
+
+        setModalVisible(true)
+
+        setTimeout(() => {
+            setModalVisible(false)
+            router.replace("../home")
+        }, 1500)
+
+    } catch (err) {
+        console.log("REGISTER ERROR:", err);
+        setError(err.message || "Erreur lors de l'inscription");
+        Alert.alert(err.message || "Erreur lors de l'inscription");
+    } finally{
+        setLoading(false);
+        console.log("FINAL DATA:", data);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,27 +87,32 @@ export default function register() {
             <TextInput placeholder="Enter your email" value={email} onChangeText={setEmail}/>
          </View>
 
+          <View style={styles.input}>
+            <Feather name="phone-call" size={24} color="gray" />
+            <TextInput placeholder="Enter your number" value={tel} onChangeText={setTel}/>
+         </View>
+
         <View style={styles.input}>
             <Ionicons name="lock-closed-outline" size={24} color="gray" />
             <TextInput placeholder="Enter your password" secureTextEntry={true} value={password} onChangeText={setPassword}/>
         </View>
 
         <View style={styles.input}>
-            <Ionicons name="lock-closed-outline" size={24} color="gray" />
+            <AntDesign name="cloud" size={24} color="#ccc" />
             <TextInput placeholder="Enter your role" value={role} onChangeText={setRole}/>
         </View>
 
-         {role === "DOCTOR" && (
+         {role === "doctor" && (
             <View style={styles.input}>
-                <Ionicons name="lock-closed-outline" size={24} color="gray" />
-                <TextInput placeholder="Enter your password" secureTextEntry={true} value={specialty} onChangeText={setSpecialty}/>
+                <MaterialIcons name="type-specimen" size={24} color="gray" />
+                <TextInput placeholder="Enter your Specialty"  value={specialty} onChangeText={setSpecialty}/>
             </View>        
          )}
             <Text style={styles.forgot}>Forgot Password?</Text>
        </View>
 
-       <TouchableOpacity style={styles.submit} onPress={() => router.push("../home")}>
-            <Text style={styles.txtInput}>Sign In </Text>
+       <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+            <Text style={styles.txtInput}>{loading ? "Chargement..." : "Sign in"} </Text>
              <Ionicons name="chevron-forward" size={24} color="white" />
        </TouchableOpacity>
 
@@ -112,7 +169,7 @@ const styles = StyleSheet.create({
         gap: 10,
         paddingHorizontal: 10,
         borderRadius: 10,
-        backgroundColor: COLORS.input,
+        backgroundColor: "#ffff",
         alignSelf: "stretch"
     },
 

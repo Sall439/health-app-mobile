@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/auth.store'
 
 export default function Header(){
     const user = useAuthStore((state) => state.user)
+    console.log("USER IN HEADER:", user);
   return (
     <View style={styles.top}>
            <View style={styles.headerTop}>

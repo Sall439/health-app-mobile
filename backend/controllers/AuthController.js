@@ -107,7 +107,8 @@ const registerUsers = async (req, res) => {
                 id: newUser._id,
                 email: newUser.email,
                 tel: newUser.tel,
-                role: newUser.role
+                role: newUser.role,
+                name: newUser.name
             }
         })
 
