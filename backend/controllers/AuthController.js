@@ -32,12 +32,13 @@ const loginUsers = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
 
-        sendEmail(
+        setImmediate(() => {
+            sendEmail(
             existingUser.email,
             "Connexion a CareFlow",
             `Bonjour ${existingUser.name}, vous venez de vous connecter à votre compte CareFlow. Si ce n'était pas vous, veuillez contacter notre support immédiatement pour sécuriser votre compte.`
         )
-
+        })
         existingUser.lastLogin = new Date()
         await existingUser.save()
 
@@ -98,11 +99,14 @@ const registerUsers = async (req, res) => {
     }
         const newUser = await Users.create(userData)    
         
-        await sendEmail(
+        setImmediate(() => {
+            sendEmail(
             userData.email,
             `Bienvenue sur Careflow, ${userData.name}`,
             `Merci de vous être inscrit sur notre plateforme de prise de rendez-vous médicaux. Nous sommes ravis de vous compter parmi nos utilisateurs et nous espérons que notre service vous facilitera la gestion de vos rendez-vous médicaux.`
         )
+        })
+
 
         const token = jwt.sign({
             id: newUser._id,
