@@ -5,6 +5,7 @@ const AuthRoutes = require("./routes/UserRoute")
 const AppointmentRoutes =  require("./routes/AppointmentRoute")
 const MessagesRoutes = require("./routes/MessagesRoutes")
 const RecordRoutes = require("./routes/RecordsRoutes")
+const sendEmail = require("./utils/sendEmail")
 
 const app = express()
 const router = express.Router()
