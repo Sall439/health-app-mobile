@@ -1,10 +1,11 @@
 const nodemailer = require("nodemailer")
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.sendgrid.net",
+    port: 587,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: "apikey", 
+        pass: process.env.SENDGRID_API_KEY
     }
 })
 
@@ -12,7 +13,7 @@ const sendEmail = async (to, subject, text) => {
     try {
 
         const info = await transporter.sendMail({
-            from: `"CareFlow" <${process.env.EMAIL_USER}>`,
+            from: `"CareFlow" <no-reply@careflow.com>`,
             to,
             subject,
             text
