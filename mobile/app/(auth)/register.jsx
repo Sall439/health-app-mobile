@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, Button, Image, StyleSheet, TextInput, TouchableOpacity, Alert, Modal } from "react-native";
 import { useAuthStore } from "../../src/store/auth.store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -23,6 +23,7 @@ export default function register() {
   const [role, setRole] = useState("patient")
   const [specialty, setSpecialty] = useState("")
   const [tel, setTel] = useState("")
+const [modalVisible, setModalVisible] = useState(false);
  
 
   const handleSubmit = async () => {
@@ -49,6 +50,13 @@ export default function register() {
                 role: data.newUser.role
              })
          }
+
+        setModalVisible(true)
+
+        setTimeout(() => {
+            setModalVisible(false)
+            router.replace("/login")
+        }, 1500)
 
 
        
@@ -125,6 +133,14 @@ export default function register() {
                 <Text>Continue with Apple</Text>
             </TouchableOpacity>
        </View>
+
+       <Modal visible={modalVisible} transparent animationType="fade">
+               <View style={{ flex:1, justifyContent:"center", alignItems:"center", backgroundColor:"rgba(0,0,0,0.4)" }}>
+                 <View style={{ backgroundColor:"white", padding:30, borderRadius:15, alignItems:"center" }}>
+                   <Text style={{ fontSize:18, fontWeight:"bold", marginBottom:10 }}>Inscription réussie !</Text>
+                 </View>
+               </View>
+        </Modal>
     </SafeAreaView>
   );
 }

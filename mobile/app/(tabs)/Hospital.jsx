@@ -4,6 +4,7 @@ import HeaderPages from '../../src/components/HeaderPages'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MapView, { Marker } from "react-native-maps"
 import { COLORS, FONTS } from '../../src/constants/theme'
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 const { width, height } = Dimensions.get("window")
 
@@ -18,6 +19,7 @@ export default function Hospital() {
       address: "Avenue Nelson Mandela, Dakar",
       latitude: 14.66145,
       longitude: -17.43478,
+      phone: 706141613
     },
     {
       id: "2",
@@ -25,6 +27,7 @@ export default function Hospital() {
       address: "Fann Résidence, Dakar",
       latitude: 14.68810,
       longitude: -17.46620,
+      phone: 706141613
     },
     {
       id: "3",
@@ -32,6 +35,7 @@ export default function Hospital() {
       address: "Avenue Pasteur, Dakar",
       latitude: 14.65725,
       longitude: -17.43666,
+      phone: 706141613
     },
     {
       id: "4",
@@ -39,6 +43,7 @@ export default function Hospital() {
       address: "Guele Tapée, près de l’École supérieure polytechnique de Dakar et du stade Iba-Mar-Diop.",
       latitude: 14.68462,
       longitude: -17.45389,
+      phone: 706141613
     },
     {
       id: "5",
@@ -46,7 +51,27 @@ export default function Hospital() {
       address: "Avenue des Diambars, Dakar",
       latitude: 14.66000,
       longitude: -17.43000,
+      phone: 706141613
     },
+
+    {
+      id: "6",
+      name: "Clinique Maimouna de Rufisque",
+      address: "PPF8+QJ9, Dakar 20100, Senegal",
+      latitude: 14.7244206,
+      longitude: -17.2833923,
+      phone: 706141613
+    },
+
+     {
+      id: "7",
+      name: "Clinique Tounkara de Keur Massar",
+      address: "PPF8+QJ9, Dakar 20100, Senegal",
+      latitude: 14.7696964,
+      longitude: -17.3149879,
+      phone: 706141613
+    },
+
   ]
 
   const openMap = (hospital) => {
@@ -58,6 +83,7 @@ export default function Hospital() {
     <View style={styles.card}>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.address}>📍 {item.address}</Text>
+      <Text style={styles.address}><SimpleLineIcons name="call-end" size={18} color="black" /> {item.phone}</Text>
 
       <TouchableOpacity
         style={styles.mapBtn}

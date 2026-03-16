@@ -1,6 +1,13 @@
 {
   "dependencies": {
+    "expo": "~55.0.3",
     "expo-blur": "~55.0.8",
+    "nodemailer": "^8.0.2",
+    "react": "19.2.0",
+    "react-native": "0.83.2",
     "uuid": "^13.0.0"
-  }
+  },
+  "name": "health-app",
+  "version": "1.0.0",
+  "scripts": {}
 }

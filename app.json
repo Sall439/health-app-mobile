@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "0cc91c7d-d1e3-45d3-8802-4898d33ec560"
+      }
+    },
+    "android": {
+      "package": "com.junior73.healthapp"
+    }
+  }
+}

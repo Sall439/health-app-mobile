@@ -1,6 +1,7 @@
 const Users = require("../models/Users")
 const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const sendEmail = require("../utils/sendEmail")
 
 
 const loginUsers = async (req, res) => {
@@ -8,7 +9,7 @@ const loginUsers = async (req, res) => {
         const {email, password} = req.body
 
         if(!email || !password){
-            return res.status(400).json({message: "Veuillez remplir ses champs"})
+            return res.status(400).json({message: "Veuillez remplir ces champs"})
         }
 
         const existingUser = await Users.findOne({email})
@@ -31,6 +32,15 @@ const loginUsers = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         })
 
+        sendEmail(
+            existingUser.email,
+            "Connexion a CareFlow",
+            `Bonjour ${existingUser.name}, vous venez de vous connecter à votre compte CareFlow. Si ce n'était pas vous, veuillez contacter notre support immédiatement pour sécuriser votre compte.`
+        )
+
+        existingUser.lastLogin = new Date()
+        await existingUser.save()
+
         return res.status(200).json({message: "Utilisateur connecte", token,
             user: {
             id: existingUser._id,
@@ -50,7 +60,7 @@ const loginUsers = async (req, res) => {
 
 const registerUsers = async (req, res) => {
      try {
-        const {name, email, password, tel, role, specialite} = req.body
+        const {name, email, password, tel, role, specialite ,specialtyId, hospitalId} = req.body
 
         if(!name || !email || !password || !tel || !role){
             return res.status(400).json({message: "Veuillez remplir ses champs"})
@@ -86,7 +96,13 @@ const registerUsers = async (req, res) => {
         userData.specialite = specialtyId;
         userData.hospital = hospitalId;
     }
-        const newUser = await Users.create(userData)            
+        const newUser = await Users.create(userData)    
+        
+        await sendEmail(
+            userData.email,
+            `Bienvenue sur Careflow, ${userData.name}`,
+            `Merci de vous être inscrit sur notre plateforme de prise de rendez-vous médicaux. Nous sommes ravis de vous compter parmi nos utilisateurs et nous espérons que notre service vous facilitera la gestion de vos rendez-vous médicaux.`
+        )
 
         const token = jwt.sign({
             id: newUser._id,

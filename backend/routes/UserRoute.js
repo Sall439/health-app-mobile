@@ -2,6 +2,7 @@ const express = require("express")
 
 const router = express.Router()
 
+
 const {registerUsers, loginUsers, logoutUsers, changePassword} = require("../controllers/AuthController")
 const {getAllAppointment, getProfile, getAlldoctors, reportAppointment, createAppointment} = require("../controllers/PatientController")
 const { getPatients , getPatientId, addPatient,} = require("../controllers/DocteurController")

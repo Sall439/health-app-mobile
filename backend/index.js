@@ -14,6 +14,17 @@ app.use(cors())
 
 db()
 
+app.get("/test-email", async (req, res) => {
+
+ await sendEmail(
+  "tonemail@gmail.com",
+  "Test CareFlow",
+  "Ceci est un test d'envoi email"
+ )
+
+ res.send("Email envoyé")
+})
+
 app.use("/api/users", AuthRoutes)
 app.use("/api/appointments", AppointmentRoutes)
 app.use("/api/messages", MessagesRoutes)
