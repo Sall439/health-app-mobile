@@ -18,7 +18,7 @@ db()
 app.get("/test-email", async (req, res) => {
 
  await sendEmail(
-  "tonemail@gmail.com",
+  "salljunior439@gmail.com",
   "Test CareFlow",
   "Ceci est un test d'envoi email"
  )

@@ -55,8 +55,10 @@ const [modalVisible, setModalVisible] = useState(false);
 
         setTimeout(() => {
             setModalVisible(false)
-            router.replace("/login")
+            router.replace("../home")
         }, 1500)
+
+        setLoading(false)
 
 
        
